@@ -1,33 +1,37 @@
 {
   "name": "ws-product-nodejs",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "API work samples",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "nodemon index.js",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint ."
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/EQWorks/ws-product-nodejs.git"
+    "url": "git+https://github.com/Khizer22/ws-product-nodejs.git"
   },
-  "author": "woozyking",
+  "author": "khizer",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/EQWorks/ws-product-nodejs/issues"
+    "url": "https://github.com/Khizer22/ws-product-nodejs.git/issues"
   },
-  "homepage": "https://github.com/EQWorks/ws-product-nodejs#readme",
+  "homepage": "https://github.com/Khizer22/ws-product-nodejs#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1",
-    "pg": "^8.5.1"
+    "moment": "^2.29.4",
+    "pg": "^8.5.1",
+    "redis": "^4.2.0"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.19"
   },
   "engines": {
     "node": "14.x"
-  }
+  },
+  "type": "module"
 }

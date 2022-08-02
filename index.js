@@ -1,10 +1,25 @@
-const express = require('express')
-const pg = require('pg')
+
+import express from 'express';
+import pg from 'pg';
+import cors from 'cors';
+import api_limit from './api_rate_limit.js';
 
 const app = express()
 // configs come from standard PostgreSQL env vars
 // https://www.postgresql.org/docs/9.6/static/libpq-envars.html
-const pool = new pg.Pool()
+
+//enable cross-origin resource policy to obtain server info
+app.use(cors());
+
+//temporarily setting programatic credentials
+//will set as environment variables when hosting (heroku maybe)
+const pool = new pg.Pool({
+  user: process.env.DB.USER,
+  host: process.env.DB.HOST,
+  database: process.env.DB.DATABASE,
+  password: process.env.DB.PASSWORD,
+  port: process.env.DB.PORT,
+})
 
 const queryHandler = (req, res, next) => {
   pool.query(req.sqlQuery).then((r) => {
@@ -12,8 +27,10 @@ const queryHandler = (req, res, next) => {
   }).catch(next)
 }
 
-app.get('/', (req, res) => {
-  res.send('Welcome to EQ Works 😎')
+app.use(api_limit);
+
+app.get('/', (req, res,next) => {
+  res.send('Welcome to Cool Bananas 🍌')
 })
 
 app.get('/events/hourly', (req, res, next) => {
