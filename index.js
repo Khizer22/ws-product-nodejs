@@ -14,11 +14,11 @@ app.use(cors());
 //temporarily setting programatic credentials
 //will set as environment variables when hosting (heroku maybe)
 const pool = new pg.Pool({
-  user: process.env.DB.USER,
-  host: process.env.DB.HOST,
-  database: process.env.DB.DATABASE,
-  password: process.env.DB.PASSWORD,
-  port: process.env.DB.PORT,
+  user: process.env.DBUSER,
+  host: process.env.DBHOST,
+  database: process.env.DBDATABASE,
+  password: process.env.DBPASSWORD,
+  port: process.env.DBPORT,
 })
 
 const queryHandler = (req, res, next) => {
