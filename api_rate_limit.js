@@ -67,7 +67,8 @@ const api_limit = (req,res,next) => {
                 //check if token is greater than 1
                 else if (data.token <= 0){
                     //res.status(429).jsend.error(`You have exceeded the ${MAX_REQUESTS_ALLOWED} requests in ${DURATION_LIMIT_MINUTE} minute limit!`);
-                    throw 'OUT OF TOKENS';
+                    return res.status(429).json('Cannot process request: Out of Tokens');
+                    //throw 'OUT OF TOKENS';
                 }
                 else {
                     newInfo = {
