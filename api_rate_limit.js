@@ -2,8 +2,12 @@ import { createClient } from 'redis';
 import moment from 'moment';
 
 //
-const client = createClient({
-    url: process.env.REDIS_URL
+const client = redis.createClient({
+    url: process.env.REDIS_URL,
+    socket: {
+      tls: false,
+      rejectUnauthorized: false
+    }
 });
   
 client.on('error', (err) => console.log('Redis Client Error', err));
