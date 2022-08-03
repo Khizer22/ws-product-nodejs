@@ -83,7 +83,9 @@ const api_limit = (req,res,next) => {
         .catch((err) => {
             console.log(`ERROR: ${err}`)
             //next(error);
-        });        
+        });    
+        
+        next();
     }
 
 }
