@@ -22,7 +22,7 @@ const initUserInfo = () => {
 client.on('error', (err) => console.log('Redis Client Error', err));
 
 const DURATION_LIMIT_SECONDS = 15;
-const ALLOWED_TOKENS = 10;
+const ALLOWED_TOKENS = 10 - 1;
 
 await client.connect();
  
@@ -67,8 +67,7 @@ const api_limit = (req,res,next) => {
                 }
                 //check if token is greater than 1
                 else if (data.token <= 0){
-                    //res.status(429).jsend.error(`You have exceeded the ${MAX_REQUESTS_ALLOWED} requests in ${DURATION_LIMIT_MINUTE} minute limit!`);
-                    return res.status(429).json('Cannot process request: Out of Tokens');
+                    return res.status(429).json(`Too many requests! please try again in ${DURATION_LIMIT_SECONDS - elapsedTime} seconds`);
                 }
                 else {
                     newInfo = {
