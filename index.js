@@ -27,7 +27,7 @@ const queryHandler = (req, res, next) => {
   }).catch(next)
 }
 
-app.use(api_limit);
+//app.use(api_limit);
 
 app.get('/', (req, res,next) => {
   res.send('Welcome to Cool Bananas 🍌')
