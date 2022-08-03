@@ -32,50 +32,53 @@ const api_limit = (req,res,next) => {
 
         })
         .then(response => {
-            if (response === null){
-                //User doesn't exists: setup in cache                
-                const userInfo = {
-                    timeStamp : time.unix(),
-                    token: ALLOWED_TOKENS
-                }
 
-                client.set(req.ip,JSON.stringify(userInfo));
-            }
-            else{
-                //Found User
-                //Subtract Bucket OR if duration has passed, refill
-                let data = JSON.parse(response);
-                console.log(data);
-                let newInfo = {
-                    timeStamp : time.unix(),
-                    token: ALLOWED_TOKENS
-                };
+            console.log(response);
 
-                //Check if duration has elapsed
-                const elapsedTime = time.unix() - data.timeStamp;
-                console.log(`elapsed time ${elapsedTime}`)
-                if (elapsedTime > DURATION_LIMIT_SECONDS){
-                    //RESET
-                    newInfo = {
-                        timeStamp : time.unix(),
-                        token: ALLOWED_TOKENS
-                    }
-                }
-                //check if token is greater than 1
-                else if (data.token <= 0){
-                    //res.status(429).jsend.error(`You have exceeded the ${MAX_REQUESTS_ALLOWED} requests in ${DURATION_LIMIT_MINUTE} minute limit!`);
-                    throw 'OUT OF TOKENS';
-                }
-                else {
-                    newInfo = {
-                        timeStamp : data.timeStamp,
-                        token: (data.token - 1)
-                    }
-                }      
+            // if (response === null){
+            //     //User doesn't exists: setup in cache                
+            //     const userInfo = {
+            //         timeStamp : time.unix(),
+            //         token: ALLOWED_TOKENS
+            //     }
+
+            //     client.set(req.ip,JSON.stringify(userInfo));
+            // }
+            // else{
+            //     //Found User
+            //     //Subtract Bucket OR if duration has passed, refill
+            //     let data = JSON.parse(response);
+            //     console.log(data);
+            //     let newInfo = {
+            //         timeStamp : time.unix(),
+            //         token: ALLOWED_TOKENS
+            //     };
+
+            //     //Check if duration has elapsed
+            //     const elapsedTime = time.unix() - data.timeStamp;
+            //     console.log(`elapsed time ${elapsedTime}`)
+            //     if (elapsedTime > DURATION_LIMIT_SECONDS){
+            //         //RESET
+            //         newInfo = {
+            //             timeStamp : time.unix(),
+            //             token: ALLOWED_TOKENS
+            //         }
+            //     }
+            //     //check if token is greater than 1
+            //     else if (data.token <= 0){
+            //         //res.status(429).jsend.error(`You have exceeded the ${MAX_REQUESTS_ALLOWED} requests in ${DURATION_LIMIT_MINUTE} minute limit!`);
+            //         throw 'OUT OF TOKENS';
+            //     }
+            //     else {
+            //         newInfo = {
+            //             timeStamp : data.timeStamp,
+            //             token: (data.token - 1)
+            //         }
+            //     }      
                 
-                client.set(req.ip,JSON.stringify(newInfo));
-                next();
-            }
+            //     client.set(req.ip,JSON.stringify(newInfo));
+            //     next();
+            // }
         })
         .catch((err) => {
             console.log(`ERROR: ${err}`)
