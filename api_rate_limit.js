@@ -43,6 +43,7 @@ const api_limit = (req,res,next) => {
                 }
 
                 client.set(req.ip,JSON.stringify(userInfo));
+                return next();
             }
             else{
                 //Found User
@@ -68,7 +69,6 @@ const api_limit = (req,res,next) => {
                 else if (data.token <= 0){
                     //res.status(429).jsend.error(`You have exceeded the ${MAX_REQUESTS_ALLOWED} requests in ${DURATION_LIMIT_MINUTE} minute limit!`);
                     return res.status(429).json('Cannot process request: Out of Tokens');
-                    //throw 'OUT OF TOKENS';
                 }
                 else {
                     newInfo = {
@@ -77,15 +77,15 @@ const api_limit = (req,res,next) => {
                     }
                 }      
                 
-                client.set(req.ip,JSON.stringify(newInfo));
+                client.set(req.ip,JSON.stringify(newInfo)); 
+                return next();
             }
         })
         .catch((err) => {
             console.log(`ERROR: ${err}`)
-            //next(error);
+            next();
         });    
-        
-        next();
+    
     }
 
 }
