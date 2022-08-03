@@ -3,7 +3,7 @@ import moment from 'moment';
 
 //
 const client = createClient({
-    url: `redis://${process.env.REDISUSER}:${process.env.REDISPASSWORD}@${process.env.REDISHOST}:${process.env.REDISPORT}`
+    url: process.env.REDIS_URL
   });
   
 client.on('error', (err) => console.log('Redis Client Error', err));
