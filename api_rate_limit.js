@@ -2,7 +2,7 @@ import { createClient } from 'redis';
 import moment from 'moment';
 
 //
-const client = redis.createClient({
+const client = createClient({
     url: process.env.REDIS_URL,
     socket: {
       tls: false,
