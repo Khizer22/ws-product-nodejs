@@ -30,7 +30,7 @@ const queryHandler = (req, res, next) => {
 app.use(api_limit);
 
 app.get('/', (req, res,next) => {
-  res.send('Welcome to Cool Bananas 🍌')
+  res.send('Welcome to Cool Spaghetti 🍝');
 })
 
 app.get('/events/hourly', (req, res, next) => {

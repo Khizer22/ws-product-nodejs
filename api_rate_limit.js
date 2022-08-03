@@ -9,6 +9,15 @@ const client = createClient({
       rejectUnauthorized: false
     }
 });
+
+const initUserInfo = () => {
+    let time = moment();
+
+    return {
+        timeStamp : time.unix(),
+        token: ALLOWED_TOKENS
+    }
+}
   
 client.on('error', (err) => console.log('Redis Client Error', err));
 
@@ -37,10 +46,7 @@ const api_limit = (req,res,next) => {
 
             if (response === null){
                 //User doesn't exists: setup in cache                
-                const userInfo = {
-                    timeStamp : time.unix(),
-                    token: ALLOWED_TOKENS
-                }
+                const userInfo = initUserInfo();
 
                 client.set(req.ip,JSON.stringify(userInfo));
                 return next();
@@ -50,20 +56,14 @@ const api_limit = (req,res,next) => {
                 //Subtract Bucket OR if duration has passed, refill
                 let data = JSON.parse(response);
                 console.log(data);
-                let newInfo = {
-                    timeStamp : time.unix(),
-                    token: ALLOWED_TOKENS
-                };
+                let newInfo = initUserInfo();
 
                 //Check if duration has elapsed
                 const elapsedTime = time.unix() - data.timeStamp;
                 console.log(`elapsed time ${elapsedTime}`)
                 if (elapsedTime > DURATION_LIMIT_SECONDS){
                     //RESET
-                    newInfo = {
-                        timeStamp : time.unix(),
-                        token: ALLOWED_TOKENS
-                    }
+                    //newInfo = initUserInfo();
                 }
                 //check if token is greater than 1
                 else if (data.token <= 0){
@@ -83,7 +83,7 @@ const api_limit = (req,res,next) => {
         })
         .catch((err) => {
             console.log(`ERROR: ${err}`)
-            next();
+            return res.status(429).json('Something went wrong');
         });    
     
     }
